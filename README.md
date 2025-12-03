@@ -2,7 +2,7 @@
 
 > Discover salary insights and compensation data across top companies
 
-A modern web application that provides transparent salary insights to help professionals make informed career decisions. Built with Next.js and featuring an intuitive interface for exploring salary data across various companies, locations, and experience levels.
+Modern web app for transparent salary insights, now structured as a **frontend + backend** monorepo.
 
 ![Next.js](https://img.shields.io/badge/Next.js-16.0.0-black?style=flat-square&logo=next.js)
 ![React](https://img.shields.io/badge/React-19.2.0-blue?style=flat-square&logo=react)
@@ -11,150 +11,82 @@ A modern web application that provides transparent salary insights to help profe
 
 ## ✨ Features
 
-- 🔍 **Advanced Filtering**: Search and filter by company, location, designation, and years of experience
-- 📊 **Comprehensive Data**: View min, max, and average salary information
-- 🎯 **Smart Autocomplete**: Quick company search with real-time suggestions
-- 📱 **Responsive Design**: Fully optimized for desktop, tablet, and mobile devices
-- 🎨 **Modern UI**: Clean, professional interface with gradient accents
-- 📧 **Contact Form**: Integrated contact system with email notifications
-- 🔄 **Real-time Updates**: Live data filtering and sorting
-- 📄 **Pagination**: Easy navigation through large datasets
+- 🔍 **Advanced Filtering**: Filter by company, location, designation, and years of experience
+- 📊 **Live Salary Table**: Min / max / average salary, with upvotes and comments
+- 🧾 **User Submissions**: Add salary data via a modal, stored in Supabase and shown in the table
+- 💬 **Comments & Votes**: Discuss and vote on individual salary entries
+- 📱 **Responsive UI**: Optimized for desktop, tablet, and mobile
 
-## 🛠️ Tech Stack
+## 🧱 Monorepo Layout
 
-- **Framework**: [Next.js 16.0](https://nextjs.org/) - React framework with App Router
-- **Language**: [TypeScript](https://www.typescriptlang.org/) - Type-safe development
-- **Styling**: [Tailwind CSS 4.0](https://tailwindcss.com/) - Utility-first CSS framework
-- **UI Components**: Custom React components
-- **Form Handling**: Web3Forms integration
-- **Deployment**: Optimized for Vercel deployment
+```txt
+salaris.fyi/
+├── frontend/                        # Next.js app (UI + API routes)
+│   ├── src/
+│   │   ├── app/                     # Pages, layouts, API route handlers
+│   │   ├── components/              # UI + containers (incl. AddSalaryModal)
+│   │   ├── contexts/                # Auth / theme / language contexts
+│   │   └── lib/                     # Frontend utilities and anon Supabase client
+│   ├── public/                      # Static assets
+│   ├── next.config.ts
+│   ├── tsconfig.json                # Frontend TS config
+│   └── package.json
+├── backend/                         # Backend/domain logic & data tooling
+│   ├── salaries/                    # Salary service + repository + types
+│   ├── supabase/                    # Server-side Supabase client (service role)
+│   ├── scrapper/                    # Scrapers + migrations + schema.sql
+│   └── backend/database/            # SQL setup: database_setup, CHECK_DATABASE, etc.
+└── tsconfig.json                    # Backend-only TS config (root)
+```
 
 ## 🚀 Getting Started
 
-### Prerequisites
-
-- Node.js 20.x or higher
-- npm or yarn package manager
-
-### Installation
-
-1. **Clone the repository**
-
-   ```bash
-   git clone https://github.com/yourusername/salaris.fyi.git
-   cd salaris.fyi
-   ```
-
-2. **Install dependencies**
-
-   ```bash
-   npm install
-   ```
-
-3. **Set up environment variables**
-
-   Create a `.env.local` file in the root directory:
-
-   ```env
-   NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=your_access_key_here
-   ```
-
-   Get your free access key from [Web3Forms](https://web3forms.com)
-
-4. **Run the development server**
-
-   ```bash
-   npm run dev
-   ```
-
-5. **Open your browser**
-
-   Navigate to [http://localhost:3000](http://localhost:3000)
-
-## 📋 Available Scripts
+### 1. Clone
 
 ```bash
-npm run dev      # Start development server
-npm run build    # Build for production
-npm run start    # Start production server
-npm run lint     # Run ESLint
+git clone https://github.com/yourusername/salaris.fyi.git
+cd salaris.fyi
 ```
 
-## 📧 Contact Form Setup
+### 2. Frontend setup (Next.js app)
 
-The contact form uses Web3Forms to send submissions directly to your email:
-
-1. Visit [https://web3forms.com](https://web3forms.com)
-2. Enter your email address: `ssaswat786@gmail.com`
-3. Get your free access key
-4. Add it to `.env.local` as shown above
-5. Restart your development server
-
-For detailed instructions, see [CONTACT_FORM_SETUP.md](./CONTACT_FORM_SETUP.md)
-
-## 📁 Project Structure
-
-```
-salaris.fyi/
-├── src/
-│   ├── app/
-│   │   ├── about/          # About Us page
-│   │   ├── contact/        # Contact page with form
-│   │   ├── page.tsx        # Main salary insights page
-│   │   ├── layout.tsx      # Root layout with metadata
-│   │   ├── globals.css     # Global styles
-│   │   └── icon.jpg        # Favicon
-│   └── data/
-│       └── salaries.json   # Salary data
-├── public/                 # Static assets
-├── .env.local             # Environment variables (create this)
-└── package.json           # Dependencies and scripts
+```bash
+cd frontend
+npm install
 ```
 
-## 🎨 Design System
+Create `frontend/.env.local`:
 
-### Colors
+```env
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=your_web3forms_access_key
+```
 
-- **Primary**: `#80A1BA` - Soft blue-gray
-- **Secondary**: `#5A7A8A` - Darker blue-gray
-- **Accent**: `#6B8BA0` - Medium blue-gray
-- **Background**: Gradient from `gray-50` to `gray-100`
+Run dev server:
 
-### Typography
+```bash
+npm run dev
+```
 
-- **Font Family**: Geist Sans (primary), Geist Mono (code)
-- **Headings**: Gradient text with brand colors
+Open `http://localhost:3000`.
+
+### 3. Backend tooling (optional)
+
+Backend TypeScript (services, repository, server Supabase client) uses the root `tsconfig.json`.  
+Scraping and SQL scripts live under `backend/scrapper` and `backend/backend/database`.
 
 ## 👥 Team
 
-This project was developed by:
-
-- **[Riya Kumari Jha](https://www.linkedin.com/in/riya-jha-7b4774210/)** - Developer
-- **[Saswat Samal](https://www.linkedin.com/in/saswatsam/)** - Developer
+- **[Riya Kumari Jha](https://www.linkedin.com/in/riya-jha-7b4774210/)** – Developer  
+- **[Saswat Samal](https://www.linkedin.com/in/saswatsam/)** – Developer
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please open an issue or submit a PR.
 
 ## 📝 License
 
-This project is open source and available under the [MIT License](LICENSE).
+Open source under the [MIT License](LICENSE).
 
-## 📬 Contact
-
-For questions or feedback, please reach out:
-
-- Email: ssaswat786@gmail.com
-- Use the [contact form](http://localhost:3000/contact) on the website
-
-## 🙏 Acknowledgments
-
-- Salary data sourced from community contributions
-- Built with modern web technologies
-- Inspired by the need for salary transparency in tech
-
-## 🚢 Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme).
-
-Check out the [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

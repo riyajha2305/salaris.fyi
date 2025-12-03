@@ -11,12 +11,14 @@ interface AddSalaryModalProps {
   isOpen: boolean;
   onClose: () => void;
   type: ModalType;
+  onSuccess?: () => void;
 }
 
 export default function AddSalaryModal({
   isOpen,
   onClose,
   type,
+  onSuccess,
 }: AddSalaryModalProps) {
   const { user, openAuthModal } = useAuth();
   const [formData, setFormData] = useState({
@@ -44,15 +46,40 @@ export default function AddSalaryModal({
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) {
       openAuthModal();
       return;
     }
-    console.log("Form submitted:", formData);
-    alert("Thank you for your submission! This feature will be available soon.");
-    onClose();
+    try {
+      const response = await fetch("/api/salaries", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          type,
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        console.error("Failed to submit salary:", data);
+        alert(
+          data?.error || "Failed to submit salary. Please try again later."
+        );
+        return;
+      }
+
+      alert("Thank you for your submission!");
+      onClose();
+      onSuccess?.();
+    } catch (error) {
+      console.error("Error submitting salary:", error);
+      alert("Unexpected error. Please try again.");
+    }
   };
 
   const getModalContent = () => {

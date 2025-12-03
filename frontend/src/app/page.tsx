@@ -740,9 +740,9 @@ export default function PayScope() {
             ) : (
               <>
                 {/* Table */}
-                <div className="bg-white dark:bg-white shadow-sm rounded-xl overflow-hidden border border-gray-200 flex-1 flex flex-col">
-                  <div className="overflow-x-auto flex-1 flex flex-col">
-                    <table className="min-w-full divide-y divide-gray-200 table-fixed flex-1">
+                <div className="bg-white dark:bg-white shadow-sm rounded-xl overflow-hidden border border-gray-200">
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-200 table-fixed">
                       <thead className="bg-gradient-to-r from-slate-50 to-slate-100 sticky top-0">
                         <tr>
                           <th
@@ -1105,6 +1105,7 @@ export default function PayScope() {
         isOpen={isAddSalaryModalOpen}
         onClose={() => setIsAddSalaryModalOpen(false)}
         type="fulltime"
+        onSuccess={() => setRefreshTrigger((prev) => prev + 1)}
       />
     </div>
   );
