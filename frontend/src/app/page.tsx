@@ -4,8 +4,9 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import { supabase } from "@/lib/supabase/config";
-import SalaryDetailsPanel from "@/components/SalaryDetailsPanel";
+import SalaryDetailsPanel from "@/components/SalaryDetailsPanel/SalaryDetailsPanel";
 import AddSalaryModal from "@/components/AddSalaryModal";
+import { generateSalaryUrl } from "@/lib/utils/slug";
 
 interface SalaryData {
   id?: string;
@@ -145,11 +146,23 @@ export default function PayScope() {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [isAddSalaryModalOpen, setIsAddSalaryModalOpen] = useState(false);
 
-  // Handle row click to open side panel
+  // Handle row click to open side panel and update URL
   const handleRowClick = (item: SalaryData, index: number) => {
     setSelectedSalaryData(item);
     setSelectedRowIndex(index);
     setIsSidePanelOpen(true);
+    
+    // Update URL to SEO-friendly format (without navigation to keep panel open)
+    if (item.id) {
+      const url = generateSalaryUrl({
+        company_name: item.company_name,
+        designation: item.designation,
+        location: item.location,
+        id: item.id,
+      });
+      // Update URL without navigation (keeps panel open)
+      window.history.pushState({}, "", url);
+    }
   };
 
   // Handle side panel close

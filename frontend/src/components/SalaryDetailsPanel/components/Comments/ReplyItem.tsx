@@ -76,3 +76,4 @@ export default function ReplyItem({ reply, onVote, onDelete }: ReplyItemProps) {
     </div>
   );
 }
+

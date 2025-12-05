@@ -3,7 +3,7 @@
 import { useState, useMemo, useRef, useEffect } from "react";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
-import SalaryDetailsPanel from "@/components/SalaryDetailsPanel";
+import SalaryDetailsPanel from "@/components/SalaryDetailsPanel/SalaryDetailsPanel";
 import AddSalaryModal from "@/components/AddSalaryModal";
 import { supabase } from "@/lib/supabase/config";
 import universitySeedData from "@/data/university_data.json";

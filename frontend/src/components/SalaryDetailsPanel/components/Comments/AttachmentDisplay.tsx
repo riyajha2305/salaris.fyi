@@ -51,3 +51,4 @@ export default function AttachmentDisplay({ attachments }: AttachmentDisplayProp
     </div>
   );
 }
+
