@@ -6,6 +6,7 @@ import { ArrowLeft, MessageSquare } from "lucide-react";
 import { supabase } from "@/lib/supabase/config";
 import CommentSection from "@/components/SalaryDetailsPanel/components/Comments/CommentSection";
 import VerifiedSalary from "@/components/SalaryDetailsPanel/components/VerifiedSalary/VerifiedSalary";
+import { SidebarLayout } from "@/components/SalaryDetailsPanel/components/Sidebars";
 
 interface SalaryData {
   id?: string;
@@ -173,7 +174,7 @@ export default function SalaryDetailsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <SidebarLayout salaryData={salaryData}>
         {/* Back Button */}
         <button
           onClick={() => router.back()}
@@ -214,7 +215,7 @@ export default function SalaryDetailsPage() {
             />
           </div>
         </div>
-      </div>
+      </SidebarLayout>
     </div>
   );
 }
